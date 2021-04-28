@@ -106,14 +106,18 @@ def val(model, loader):
     return confusion_matrix, accuracy
 
 
-def test(config, model_path):
+def test(config, model_path=''):
     test_loader = data_loader(config, mode='test')
 
     model = Network(config.class_num).eval()
 
-    if config.model_path:
+    if model_path:
+        model.load_state_dict(torch.load(model_path))
+    elif config.model_path:
         logger.info("Loading pretrained model: %s" % model_path)
         model.load_state_dict(torch.load(model_path))
+    else:
+        logger.error("No model file to load")
 
     device = torch.device('cuda:0' if config.use_gpu else 'cpu')
     model.to(device)
@@ -136,5 +140,7 @@ def test(config, model_path):
 
 
 if __name__ == '__main__':
-    train(config)
-    # test(config)
+    if config.mode == 'train':
+        train(config)
+    elif config.mode == 'test':
+        test(config)
