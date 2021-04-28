@@ -67,7 +67,7 @@ def train(config):
                 num_correct = 0
 
         if (epoch + 1) % config.lr_decay_freq == 0:
-            lr = config.lr * (0.8 ** int((epoch + 1) / config.lr_decay_freq))
+            lr = config.lr * (0.5 ** int((epoch + 1) / config.lr_decay_freq))
             for param_group in optim.param_groups:
                 param_group['lr'] = lr
 
@@ -134,7 +134,7 @@ def test(config, model_path=''):
             acc = (pred == targets).float().sum() / len(targets)
             results += ((pred == targets).float().to('cpu').numpy().tolist())
 
-            logger.info('iter: %5d/%5d, acc: %.5f' % (step + 1, total_iter, acc))
+            logger.info('iter: %d/%d | acc: %.5f' % (step + 1, total_iter, acc))
 
         results = np.array(results)
         logger.info('Top 1 acc: %.5f' % (np.sum(results) / len(results)))

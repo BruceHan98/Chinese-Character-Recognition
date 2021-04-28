@@ -37,19 +37,27 @@ class DataSet(data.Dataset):
 
         Transform = transforms.Compose([
             transforms.Resize((self.config.img_size, self.config.img_size)),
-            transforms.Pad(self.config.pad_size, fill=255),
             transforms.RandomRotation((-20, 20)),
             transforms.RandomAffine((-10, 10)),
-            transforms.ColorJitter(brightness=0.2, contrast=0.2, hue=0.02),
+            transforms.ColorJitter(brightness=0.3, contrast=0.5, saturation=0.5),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.8161, 0.8161, 0.8161], std=[0.2425, 0.2425, 0.2425])
         ])
 
+        image = padding(image)
         image = Transform(image)
         return image, label
 
     def __len__(self):
         return len(self.labels)
+
+
+def padding(image, min_size=96):  # PIL Image
+    width, height = image.size
+    size = max(min_size, width, height)
+    new_im = Image.new('RGB', (size, size), (255, 255, 255))
+    new_im.paste(image, (int((size - width) / 2), int((size - height) / 2)))
+    return new_im
 
 
 def data_loader(config, mode):

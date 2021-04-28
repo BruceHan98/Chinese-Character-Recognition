@@ -42,8 +42,8 @@ def predict(image_dir):
     char_dict = pickle.load(dict_file)
 
     transformer = transforms.Compose([
-        transforms.Resize((64, 64)),
-        transforms.ColorJitter(brightness=0.5, contrast=0.5, hue=0.5),
+        transforms.Resize((config.img_size, config.img_size)),
+        transforms.ColorJitter(brightness=0.3, contrast=0.5, saturation=0.5),
         transforms.GaussianBlur((3, 3)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.8161, 0.8161, 0.8161], std=[0.2425, 0.2425, 0.2425])
@@ -62,7 +62,7 @@ def predict(image_dir):
         for i in top3:
             char = list(char_dict.keys())[list(char_dict.values()).index(i)]
             result.append(char)
-        print(result[0])
+        print(result[0:])
 
 
 if __name__ == '__main__':
