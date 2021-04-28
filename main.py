@@ -23,7 +23,7 @@ def setup_seed(seed):
 
 def train(config):
     print(config)
-    # 设置随机数种子
+    # set random seed
     setup_seed(20)
 
     train_loader = data_loader(config, mode='train')
@@ -41,7 +41,6 @@ def train(config):
     model.to(device)
 
     total_iter = int(DataSet(config, mode='train').__len__() / config.batch_size)
-    last_model_path = ''
 
     logger.info("Start training...")
     for epoch in range(config.epoch_num):

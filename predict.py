@@ -1,14 +1,25 @@
 import os
 import torch
-from network.network import Network
+# from network.network import Network
+from network.with_dropout import Dropout as Network
 from utils.config import config
 import pickle
 from torchvision import transforms
 from PIL import Image
 import numpy as np
+import random
+
+
+def setup_seed(seed):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
 
 
 def predict(image_dir):
+    setup_seed(20)
+
     model = Network(config.class_num).eval()
     model.load_state_dict(torch.load(config.model_path, map_location='cpu'))
     device = torch.device('cuda:0' if config.use_gpu else 'cpu')

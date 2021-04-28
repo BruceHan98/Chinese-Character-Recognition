@@ -14,6 +14,6 @@
 
 #### 3. 运行
 
-​	python main.py
+​	python main.py --use_gpu
 
 可根据网络结构和数据调整学习策略，默认设置在10个epoch内已经能达到很好效果。
