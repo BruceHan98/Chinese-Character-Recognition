@@ -113,8 +113,8 @@ def test(config, model_path=''):
     if model_path:
         model.load_state_dict(torch.load(model_path))
     elif config.model_path:
-        logger.info("Loading pretrained model: %s" % model_path)
-        model.load_state_dict(torch.load(model_path))
+        logger.info("Loading pretrained model: %s" % config.model_path)
+        model.load_state_dict(torch.load(config.model_path))
     else:
         logger.error("No model file to load")
 
@@ -122,6 +122,8 @@ def test(config, model_path=''):
     model.to(device)
 
     results = list()
+
+    total_iter = int(DataSet(config, mode='test').__len__() / config.batch_size)
 
     with torch.no_grad():
         for step, (inputs, targets) in enumerate(test_loader):
@@ -132,10 +134,10 @@ def test(config, model_path=''):
             acc = (pred == targets).float().sum() / len(targets)
             results += ((pred == targets).float().to('cpu').numpy().tolist())
 
-            logger.info('%5d iter | acc: %.3f' % (step + 1, acc))
+            logger.info('iter: %5d/%5d, acc: %.5f' % (step + 1, total_iter, acc))
 
         results = np.array(results)
-        logger.info('Top 1 acc: %.3f' % (np.sum(results) / len(results)))
+        logger.info('Top 1 acc: %.5f' % (np.sum(results) / len(results)))
 
 
 if __name__ == '__main__':
