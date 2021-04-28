@@ -36,8 +36,8 @@ class Dropout(nn.Module):
         self.classifier = nn.Sequential(
             nn.Linear(512 * 2 * 2, 1024),
             nn.BatchNorm1d(1024),
-            nn.Dropout(0.5),
             nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(1024, 1024),
             nn.BatchNorm1d(1024),
             nn.Dropout(0.5),
