@@ -62,7 +62,7 @@ def train(config):
             if (step + 1) % config.print_freq == 0:
                 train_loss = train_loss / config.print_freq
                 train_acc = num_correct / (config.batch_size * config.print_freq)
-                logger.info('epoch: [%d/%d], iter: %4d/%4d, lr: %.5f, loss: %.5f, acc: %.5f' %
+                logger.info('epoch: [%d/%d], iter: %4d/%4d, lr: %.6f, loss: %.5f, acc: %.5f' %
                             (epoch + 1, config.epoch_num, step + 1, total_iter, optim.param_groups[0]['lr'], train_loss, train_acc))
                 train_loss = 0
                 num_correct = 0
@@ -73,9 +73,9 @@ def train(config):
                 param_group['lr'] = lr
 
         model_save_name = time.strftime(f'epoch-{epoch}-%Y-%m-%d-%H-%M.pth')
-        torch.save(model.state_dict(), os.path.join(config.model_dir, model_save_name))
-        logger.info("Model saved in: %s" % os.path.join(config.model_dir, model_save_name))
-        last_model_path = os.path.join(config.model_dir, model_save_name)
+        model_save_path = os.path.join(config.model_dir, model_save_name)
+        torch.save(model.state_dict(), model_save_path)
+        logger.info("Model saved in: %s" % model_save_path)
 
         # validation
         if (epoch + 1) >= config.val_start and (epoch + 1) % config.val_freq == 0 or (epoch + 1) == config.val_start:
@@ -83,8 +83,9 @@ def train(config):
             _, acc = val(model, val_loader)
             logger.info("Validation accuracy: %.3f" % acc)
 
-    config.model_path = last_model_path
-    test(config)
+        # test
+        if (epoch + 1) >= config.test_start and (epoch + 1) % config.test_freq == 0 or (epoch + 1) == config.test_start:
+            test(config, model_save_path)
 
 
 def val(model, loader):
@@ -105,14 +106,14 @@ def val(model, loader):
     return confusion_matrix, accuracy
 
 
-def test(config):
+def test(config, model_path):
     test_loader = data_loader(config, mode='test')
 
     model = Network(config.class_num).eval()
 
     if config.model_path:
-        logger.info("Loading pretrained model: %s" % config.model_path)
-        model.load_state_dict(torch.load(config.model_path))
+        logger.info("Loading pretrained model: %s" % model_path)
+        model.load_state_dict(torch.load(model_path))
 
     device = torch.device('cuda:0' if config.use_gpu else 'cpu')
     model.to(device)
