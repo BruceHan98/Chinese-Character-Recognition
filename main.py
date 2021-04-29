@@ -106,7 +106,8 @@ def val(model, loader):
 
 def test(config, model_path=''):
     test_loader = data_loader(config, mode='test')
-
+    print(config)
+    logger.info("Start testing...")
     model = Network(config.class_num).eval()
 
     if model_path:
