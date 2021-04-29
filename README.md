@@ -3,10 +3,10 @@
 
 #### 1. 数据准备
 
-数据集为中科院手写汉字数据集，采用 CASIA-HWDB1.0-1.2 (.gnt) 单字符数据集，更多说明参见 [数据集](http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html)。
+数据集为中科院CASIA-HWDB1.0-1.2 (.gnt) 单字符数据集，更多说明参见[数据集](http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html)。
 
-1. 下载相应数据集并解压（参见 utils/config.py）。
-2.  运行 data_utils/gnt_parser.py ，解析 .gnt 文件并生成训练数据。
+1. 下载相应数据集并解压到指定文件夹下（配置参见 config.py）。
+2.  运行 utils/gnt_parser.py ，解析 .gnt 文件并生成训练数据。
 
 #### 2. 环境配置
 
