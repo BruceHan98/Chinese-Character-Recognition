@@ -85,10 +85,10 @@ def multi_process(gnt_dir, num_workers, save_dir):
 
 
 if __name__ == '__main__':
-    gnt_train_dir = 'gnt_train'
-    gnt_test_dir = 'gnt_test'
-    train_data_dir = 'data/train_data'
-    test_data_dir = 'data/test_data'
+    gnt_train_dir = '../../gnt_train'
+    gnt_test_dir = '../../gnt_test'
+    train_data_dir = '../../data/train_data'
+    test_data_dir = '../../data/test_data'
     num_workers = 8
 
     get_char_dict(gnt_train_dir)
@@ -98,4 +98,3 @@ if __name__ == '__main__':
     multi_process(gnt_test_dir, num_workers, test_data_dir)
 
     print("cost time: %.4f" % (time.time() - start_time))
-    # test()

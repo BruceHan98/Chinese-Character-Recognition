@@ -4,8 +4,8 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--mode", type=str, default="train")
-parser.add_argument("--train_data", type=str, default="data/train_data", help="path of train data")
-parser.add_argument("--test_data", type=str, default="data/test_data", help="path of test data")
+parser.add_argument("--train_data", type=str, default="../data/train_data", help="path of train data")
+parser.add_argument("--test_data", type=str, default="../data/test_data", help="path of test data")
 parser.add_argument("--model_dir", type=str, default="checkpoints", help="path to save checkpoints")
 parser.add_argument("--checkpoint", type=str, default="", help="pretrained model path")
 

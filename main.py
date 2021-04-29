@@ -11,7 +11,7 @@ from torchnet import meter
 from dataset import DataSet
 from network import Network
 from config import config
-from utils.log import logger
+from utils.logger import logger
 from dataset import data_loader
 
 
