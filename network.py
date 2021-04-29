@@ -1,10 +1,10 @@
 import torch.nn as nn
 
 
-class Dropout(nn.Module):
+class Network(nn.Module):
 
     def __init__(self, max_classes):
-        super(Dropout, self).__init__()
+        super(Network, self).__init__()
 
         self.feature = nn.Sequential(  # input: 64 * 64 * 3
             nn.Conv2d(3, 64, 3, stride=1, padding=1),  # out: 64 * 64 * 64

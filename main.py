@@ -1,16 +1,18 @@
 import os
-import torch
 import time
-import numpy as np
-import torch.nn as nn
-from data_utils.dataset import DataSet
-from network.network import Dropout as Network
-from torchnet import meter
-from tqdm import tqdm
-from utils.config import config
-from utils.log import logger
-from data_utils.dataset import data_loader
 import random
+import numpy as np
+from tqdm import tqdm
+
+import torch
+import torch.nn as nn
+from torchnet import meter
+
+from dataset import DataSet
+from network import Network
+from config import config
+from utils.log import logger
+from dataset import data_loader
 
 
 def setup_seed(seed):
@@ -30,9 +32,9 @@ def train(config):
 
     model = Network(config.class_num)
 
-    if config.model_path:
-        logger.info("Loading pretrained model: %s" % config.model_path)
-        model.load_state_dict(torch.load(config.model_path))
+    if config.checkpoint:
+        logger.info("Loading pretrained model: %s" % config.checkpoint)
+        model.load_state_dict(torch.load(config.checkpoint))
 
     device = torch.device('cuda:0' if config.use_gpu else 'cpu')
     criterion = nn.CrossEntropyLoss().to(device)
@@ -66,9 +68,10 @@ def train(config):
                 num_correct = 0
 
         if (epoch + 1) % config.lr_decay_freq == 0:
-            lr = config.lr * (0.5 ** int((epoch + 1) / config.lr_decay_freq))
-            for param_group in optim.param_groups:
-                param_group['lr'] = lr
+            if optim.param_groups[0]['lr'] > 0.000001:
+                lr = config.lr * (0.5 ** int((epoch + 1) / config.lr_decay_freq))
+                for param_group in optim.param_groups:
+                    param_group['lr'] = lr
 
         model_save_name = time.strftime(f'epoch-{epoch}-%Y-%m-%d-%H-%M.pth')
         model_save_path = os.path.join(config.model_dir, model_save_name)
@@ -112,9 +115,9 @@ def test(config, model_path=''):
 
     if model_path:
         model.load_state_dict(torch.load(model_path))
-    elif config.model_path:
-        logger.info("Loading pretrained model: %s" % config.model_path)
-        model.load_state_dict(torch.load(config.model_path))
+    elif config.checkpoint:
+        logger.info("Loading pretrained model: %s" % config.checkpoint)
+        model.load_state_dict(torch.load(config.checkpoint))
     else:
         logger.error("No model file to load")
 

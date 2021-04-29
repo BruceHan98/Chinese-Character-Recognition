@@ -1,7 +1,7 @@
 import os
 import torch
-from network.network import Dropout as Network
-from utils.config import config
+from network import Network
+from config import config
 import pickle
 from torchvision import transforms
 from PIL import Image
@@ -20,7 +20,7 @@ def predict(image_dir):
     setup_seed(20)
 
     model = Network(config.class_num).eval()
-    model.load_state_dict(torch.load(config.model_path, map_location='cpu'))
+    model.load_state_dict(torch.load(config.checkpoint, map_location='cpu'))
     device = torch.device('cuda:0' if config.use_gpu else 'cpu')
     model.to(device)
     torch.no_grad()
