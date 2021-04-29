@@ -33,7 +33,7 @@ class DataSet(data.Dataset):
 
     def __getitem__(self, index):
         image = Image.open(self.images[index])
-        label = int(self.labels[index][1:])
+        label = int(self.labels[index])
 
         Transform = transforms.Compose([
             transforms.Resize((self.config.img_size, self.config.img_size)),
@@ -52,9 +52,9 @@ class DataSet(data.Dataset):
         return len(self.labels)
 
 
-def padding(image, min_size=96):  # PIL Image
+def padding(image):  # PIL Image
     width, height = image.size
-    size = max(min_size, width, height)
+    size = max(width, height)
     new_im = Image.new('RGB', (size, size), (255, 255, 255))
     new_im.paste(image, (int((size - width) / 2), int((size - height) / 2)))
     return new_im

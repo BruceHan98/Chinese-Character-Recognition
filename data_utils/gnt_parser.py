@@ -28,13 +28,6 @@ def read_gnt(gnt_path):
             yield image, tagcode
 
 
-def test():
-    count = 0
-    for image, tagcode in read_gnt('gnt_test/001-f.gnt'):
-        count += 1
-        print(count)
-
-
 def get_all_files(gnt_dir):
     file_list = list()
     for root, dirs, files in os.walk(gnt_dir):

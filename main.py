@@ -4,8 +4,7 @@ import time
 import numpy as np
 import torch.nn as nn
 from data_utils.dataset import DataSet
-# from network.network import Network
-from network.with_dropout import Dropout as Network
+from network.network import Dropout as Network
 from torchnet import meter
 from tqdm import tqdm
 from utils.config import config

@@ -1,7 +1,6 @@
 import os
 import torch
-# from network.network import Network
-from network.with_dropout import Dropout as Network
+from network.network import Dropout as Network
 from utils.config import config
 import pickle
 from torchvision import transforms
@@ -46,7 +45,6 @@ def predict(image_dir):
         transforms.ColorJitter(brightness=0.3, contrast=0.5, saturation=0.5),
         transforms.GaussianBlur((3, 3)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.8161, 0.8161, 0.8161], std=[0.2425, 0.2425, 0.2425])
     ])
 
     for im in test_images:
