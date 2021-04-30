@@ -39,7 +39,7 @@ def get_all_files(gnt_dir):
 
 def get_char_dict(gnt_dir):
     char_set = set()
-    print("Generate character dictionary...")
+    print("Generating char dict...")
 
     file_list = get_all_files(gnt_dir)
     for file in file_list:
@@ -48,6 +48,7 @@ def get_char_dict(gnt_dir):
             char_set.add(tagcode_unicode)
     char_list = list(char_set)
     char_dict = dict(zip(sorted(char_list), range(len(char_list))))
+    print("char num:", len(char_list))
 
     f = open('../char_dict', 'wb')
     pickle.dump(char_dict, f)
@@ -70,8 +71,8 @@ def gen_dataset(gnt_path, index, save_dir):
         # print(save_path)
 
         image.convert('RGB').save(save_path)
-        print(f"{counter} image saved", end='\r')
         counter += 1
+    print(f"{counter} images generated")
 
 
 def multi_process(gnt_dir, num_workers, save_dir):
@@ -81,7 +82,6 @@ def multi_process(gnt_dir, num_workers, save_dir):
         p.apply_async(gen_dataset, args=(f, i, save_dir))
     p.close()
     p.join()
-    print("done.")
 
 
 if __name__ == '__main__':
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     gnt_test_dir = '../../gnt_test'
     train_data_dir = '../../data/train_data'
     test_data_dir = '../../data/test_data'
-    num_workers = 8
+    num_workers = 4
 
     get_char_dict(gnt_train_dir)
 
